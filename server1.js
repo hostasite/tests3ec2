@@ -24,11 +24,7 @@ AWS.config.update({
 	secretAccessKey: secretAccessKey,
 	region: "ap-southeast-2"
 	});
-var s3 = new AWS.S3({
-	sslEnabled: false,
-	httpOptions: {
-	agent: new proxy('http://srv-bx-proxyy:3128')
-  }});
+var s3 = new AWS.S3();
 
 var port = 3000;
 var blankTile = fs.readFileSync("./lib/blankTile.png");
