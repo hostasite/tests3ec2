@@ -51,7 +51,38 @@ app.get('/:z/:x/:y.*', function(req, res){
 	var level = zeroPad(level.toString(10), 2);
 	mbtfile = '/R' + rowName + 'C' + colName;
   console.log(mbtfile);
-	var temp = '//nas-bx-deliv2/devcache/mapCacheTesting/cacheCopy' + '/L' + level; // TEMP FOLDER CREATED FOR CACHE IN EC2, MODIFY (/home/ubuntu/mbtcache) PATH WHERE LEVELS EXISTS
+	var temp = '	});
+var s3 = new AWS.S3({
+	sslEnabled: false,
+	httpOptions: {
+	agent: new proxy('http://srv-bx-proxyy:3128')
+  }});
+
+var port = 3000;
+var blankTile = fs.readFileSync("./lib/blankTile.png");
+var noDataTile = fs.readFileSync("./lib/noDataTile.png");
+// GET PNG FROM Z, X, Y
+app.get('/:z/:x/:y.*', function(req, res){
+	function zeroPad(num, numZeros) {
+		var zeros = Math.max(0, numZeros - num.toString().length);
+		var zeroString = Math.pow(10, zeros).toString().substr(1);
+		return zeroString + num;
+	}
+	// CREATE MBTILE FILE NAMES USING Z, X, Y
+	var level = req.param('z');
+	var col = req.param('x');
+	var row = req.param('y');
+	console.log('Level - ' + level + ' Col - ' + col + ' row - ' + row);
+	var colVal = (parseInt(col / 128)) * 128;
+	var rowVal = (parseInt(row / 128)) * 128;
+	var colName = zeroPad(colVal.toString(16), 4);
+	var rowName = zeroPad(rowVal.toString(16), 4);
+	var level = zeroPad(level.toString(10), 2);
+	mbtfile = '/R' + rowName + 'C' + colName;
+  console.log(mbtfile);
+	var temp = '/home/ubuntu/mbtcache' + '/L' + level; // TEMP FOLDER CREATED FOR CACHE IN EC2, MODIFY (/home/ubuntu/mbtcache) PATH WHERE LEVELS EXISTS
+
+
 	var tempFile = temp + mbtfile + '.mbtiles';
   // IF FILE EXISTS IN CACHE FOLDER & SIZE NOT 0, CACHE IT AND FETCH PNG TILE. ELSE COPY IT FROM AWS S3
 	if ((fs.existsSync(tempFile)) && (fs.statSync(tempFile)['size'] != 0)){
