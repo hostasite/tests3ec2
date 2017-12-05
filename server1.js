@@ -52,7 +52,7 @@ app.get('/:z/:x/:y.*', function(req, res){
 	var level = zeroPad(level.toString(10), 2);
 	mbtfile = '/R' + rowName + 'C' + colName;
   console.log(mbtfile);
-	var temp = '//nas-bx-deliv2/devcache/mapCacheTesting/cacheCopy' + '/L' + level; // TEMP FOLDER CREATED FOR CACHE IN EC2, MODIFY (/home/ubuntu/mbtcache) PATH WHERE LEVELS EXISTS
+	var temp = '/home/ubuntu/mbtcache' + '/L' + level; // TEMP FOLDER CREATED FOR CACHE IN EC2, MODIFY (/home/ubuntu/mbtcache) PATH WHERE LEVELS EXISTS
 	var tempFile = temp + mbtfile + '.mbtiles';
   // IF FILE EXISTS IN CACHE FOLDER & SIZE NOT 0, CACHE IT AND FETCH PNG TILE. ELSE COPY IT FROM AWS S3
   console.log("package in cache? ", cache.get(mbtfile));
